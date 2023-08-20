@@ -17,6 +17,23 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}`);
 });
 
+const deleteMessages = (message, bannedUser) => {
+    message.channel.messages.fetch({ limit: 100 })
+    .then((messages) => {
+      // Filter messages sent by the banned user
+      const userMessages = messages.filter((msg) => msg.author.id === bannedUser.user.id);
+
+      // Delete the user's messages
+      userMessages.forEach((msg) => {
+        msg.delete()
+          .catch((error) => {
+            console.error('Error deleting message:', error);
+          });
+      })
+  })
+    
+}
+
 client.on('guildMemberAdd', (member) => {
     console.log("joined user id is", member.user.id)
   if (bannedUserIDs.includes(member.user.id)) {
@@ -42,25 +59,36 @@ client.on('messageCreate', (message) => {
             message.member.ban()
             .then((bannedUser) => {
               console.log(`Banned user: ${bannedUser.user.tag}`);
-
-              message.channel.messages.fetch({ limit: 100 })
-              .then((messages) => {
-                // Filter messages sent by the banned user
-                const userMessages = messages.filter((msg) => msg.author.id === bannedUser.user.id);
-  
-                // Delete the user's messages
-                userMessages.forEach((msg) => {
-                  msg.delete()
-                    .catch((error) => {
-                      console.error('Error deleting message:', error);
-                    });
-                })
-            })})
+              deleteMessages(message, bannedUser)
+        })
             .catch((error) => {
               console.error('Error banning user:', error);
             });
         }
     }
+
+    // Check if the message has file attachments
+  if (message.attachments.size > 0) {
+    // Iterate through the attachments
+    for (const attachment of message.attachments.values()) {
+      // Check if the attachment is a ZIP file based on its MIME type or file extension
+      if (
+        attachment.contentType === 'application/zip' ||
+        attachment.name.endsWith('.zip')
+      ) {
+        console.log("Banning attachment", attachment.name)
+        // Ban the user who sent the message
+        message.member.ban()
+          .then((bannedUser) => {
+            console.log(`Banned user: ${bannedUser.user.tag}`);
+            deleteMessages(message, bannedUser)
+          })
+          .catch((error) => {
+            console.error('Error banning user:', error);
+          });
+      }
+    }
+}
 
   });
 
