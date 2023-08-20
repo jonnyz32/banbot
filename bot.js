@@ -1,4 +1,7 @@
 const { Client, GatewayIntentBits } = require('discord.js');
+const express = require('express');
+const app = express();
+
 
 // Create a new Discord client with the specified intents
 const client = new Client({ intents:[
@@ -103,3 +106,8 @@ client.on('messageCreate', (message) => {
 
 const token = 'MTE0MjY1Nzc0MDEyOTQ1NjE4OQ.GU1GIs.RM-EgQLChDGHW6zqLkiDPYbKgPnnNRAmgghdSM';
 client.login(token);
+const PORT = process.env.PORT || 3300; // Use Heroku's assigned port or a default port
+
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
