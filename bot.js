@@ -43,7 +43,7 @@ client.on('ready', () => {
             console.log(`Banned user: ${member.user.tag}`);
           })
           .catch((error) => {
-            console.error(`Error banning user: ${error.message}`);
+            console.error(`Error banning user ${member.user.tag}: ${error.message}`);
           });
       }
     });
