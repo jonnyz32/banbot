@@ -129,16 +129,16 @@ client.on('messageCreate', (message) => {
       // Check if the attachment is a ZIP file based on its MIME type or file extension
       if (
         attachment.contentType === 'application/zip' ||
-        attachment.name.endsWith('.zip') ||
-        attachment.contentType === 'application/javascript' ||  // JavaScript file
-        attachment.contentType === 'text/html' ||  // HTML file
-        attachment.contentType === 'text/css' ||   // CSS file
-        attachment.contentType === 'application/json' ||  // JSON file
-        attachment.name.endsWith('.zip') ||          // ZIP file
-        attachment.name.endsWith('.js') ||           // JavaScript file
-        attachment.name.endsWith('.html') ||         // HTML file
-        attachment.name.endsWith('.css') ||          // CSS file
-        attachment.name.endsWith('.json')           
+        attachment.name.endsWith('.zip') 
+        // attachment.contentType === 'application/javascript' ||  // JavaScript file
+        // attachment.contentType === 'text/html' ||  // HTML file
+        // attachment.contentType === 'text/css' ||   // CSS file
+        // attachment.contentType === 'application/json' ||  // JSON file
+        // attachment.name.endsWith('.zip') ||          // ZIP file
+        // attachment.name.endsWith('.js') ||           // JavaScript file
+        // attachment.name.endsWith('.html') ||         // HTML file
+        // attachment.name.endsWith('.css') ||          // CSS file
+        // attachment.name.endsWith('.json')           
       ) {
         console.log("Banning attachment", attachment.name)
         // Ban the user who sent the message
